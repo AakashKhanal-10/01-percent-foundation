@@ -1,6 +1,6 @@
 import os
 import logging
-from scout import JobScout  # Import your Day 2 logic
+from scout import JobScout 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger("Foundation-Core")
@@ -11,7 +11,9 @@ def start():
     print(f"\n[SUCCESS]: Connection established. Welcome to the 0.1%, {engineer}.\n")
     
     # Initialize the Scout from within the Foundation-Core
-    hit_list = ["Leapfrog", "Logpoint", "CloudFactory", "Fusemachines"]
+    hit_list = ["https://www.lftechnology.com",
+        "https://www.logpoint.com",
+        "https://www.cloudfactory.com"]
     scout = JobScout(targets=hit_list)
     scout.patrol() 
 

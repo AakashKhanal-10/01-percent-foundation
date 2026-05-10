@@ -37,11 +37,10 @@ class JobScout:
     def patrol(self):
         logger.info("Patrol sequence started...")
         for target in self.targets:
-            # We don't have real URLs in hit_list yet, so let's use a test
-            test_url = "https://www.google.com" 
-            title = self.harvest(test_url)
+        # Instead of 'google', we use the actual 'target' from the list
+            title = self.harvest(target) 
             if title:
-                logger.info(f"Scout reached {target} target area. Site Title: {title}")
+                logger.info(f"Target: {target} | Site Title: {title}")
 
 if __name__ == "__main__":
     hit_list = ["Leapfrog", "Logpoint", "CloudFactory", "Fusemachines"]
