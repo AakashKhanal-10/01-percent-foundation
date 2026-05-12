@@ -10,12 +10,22 @@ def start():
     logger.info(f"--- 🚀 SYSTEM BOOT SEQUENCE INITIATED ---")
     print(f"\n[SUCCESS]: Connection established. Welcome to the 0.1%, {engineer}.\n")
     
-    # Initialize the Scout from within the Foundation-Core
-    hit_list = ["https://www.lftechnology.com",
+    # 1. THE DATA: Define where we are looking
+    hit_list = [
+        "https://www.lftechnology.com",
         "https://www.logpoint.com",
-        "https://www.cloudfactory.com"]
+        "https://www.cloudfactory.com"
+    ]
+    
+    # 2. THE REQUIREMENTS: Define WHAT we are looking for
+    # We add this line so the program knows what 'my_skills' is
+    my_skills = ['Python', 'Intern', 'Data', 'Engineering', 'Machine Learning']
+    
+    # 3. THE WORKER: Initialize the Scout
     scout = JobScout(targets=hit_list)
-    scout.patrol() 
+    
+    # 4. THE ACTION: Pass the requirements to the worker
+    scout.patrol(my_skills) 
 
 if __name__ == "__main__":
     start()

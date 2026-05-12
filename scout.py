@@ -18,29 +18,53 @@ class JobScout:
         match_count = len(set(tech_stack).intersection(my_skills))   
         return (match_count / len(my_skills)) * 100
 
+    def scan_for_keywords(self, soup, keywords):
+        # 1. Get all text from the website and make it lowercase
+        page_text = soup.get_text().lower()
+        
+        found = []
+        for word in keywords:
+            # 2. Check if the keyword exists in the text
+            if word.lower() in page_text:
+                found.append(word)
+        
+        return found
+
 
     def harvest(self, url: str):
-        """The Scout reaches out to the URL and brings back the title."""
+        
         try:
             # Send a request to the website
             response = requests.get(url, timeout=10)
             
-            # Turn the messy HTML into a 'Soup' we can search
-            soup = BeautifulSoup(response.text, 'html.parser')
+            # Instead of returning just the title text, we return the whole Soup object
             
-            # Find the title of the website
-            return soup.title.string if soup.title else "Untitled"
+            return BeautifulSoup(response.text, 'html.parser')
         except Exception as e:
             logger.error(f"Error reaching {url}: {e}")
             return None
 
-    def patrol(self):
-        logger.info("Patrol sequence started...")
+    def patrol(self, my_skills: list):
+        logger.info("--- 🚀 STARTING DEEP SCAN PATROL ---")
+        
         for target in self.targets:
-        # Instead of 'google', we use the actual 'target' from the list
-            title = self.harvest(target) 
-            if title:
-                logger.info(f"Target: {target} | Site Title: {title}")
+            # 1. Get the Eyes (The Soup)
+            soup = self.harvest(target)
+            
+            if soup:
+                # 2. Use the Brain (Scan for keywords)
+                found = self.scan_for_keywords(soup, my_skills)
+                
+                # 3. Calculate Score
+                score = (len(found) / len(my_skills)) * 100 if my_skills else 0
+                
+                # 4. Report Back
+                logger.info(f"Target: {target} | Match Results: {found} | Score: {score:.1f}%")
+                
+                if score >= 50: # Lowered to 50% for now so you see results!
+                    logger.info(f"   🎯 STRONG MATCH FOUND at {target}")
+            else:
+                logger.warning(f"   ⚠️ Could not reach {target}")
 
 if __name__ == "__main__":
     hit_list = ["Leapfrog", "Logpoint", "CloudFactory", "Fusemachines"]
