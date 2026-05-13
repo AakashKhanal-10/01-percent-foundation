@@ -2,6 +2,7 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 from schema import JobOpportunity
+from models import Session, JobMatch, init_db
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("AI-Scout")
@@ -45,7 +46,15 @@ class JobScout:
             return None
 
     def patrol(self, my_skills: list):
+
+        # Initialize the database(creates the file if it doesnot exist)
+        init_db()
+        session = Session()
+
+
         logger.info("--- 🚀 STARTING DEEP SCAN PATROL ---")
+        
+
         
         for target in self.targets:
             # 1. Get the Eyes (The Soup)
@@ -57,7 +66,17 @@ class JobScout:
                 
                 # 3. Calculate Score
                 score = (len(found) / len(my_skills)) * 100 if my_skills else 0
-                
+
+                # 1 Create a new databse record for the job match
+                match_record=JobMatch(
+                    company=target,
+                    score=score,
+                    keywords_found=", ".join(found),# Turn the list of found keywords into a comma-separated string
+                  
+                )
+                #2 Save it tp a database
+                session.add(match_record)
+                session.commit()
                 # 4. Report Back
                 logger.info(f"Target: {target} | Match Results: {found} | Score: {score:.1f}%")
                 

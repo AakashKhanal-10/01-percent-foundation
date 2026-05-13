@@ -1,7 +1,6 @@
 import os
 import logging
 from scout import JobScout 
-
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger("Foundation-Core")
 
@@ -26,6 +25,8 @@ def start():
     
     # 4. THE ACTION: Pass the requirements to the worker
     scout.patrol(my_skills) 
+
+    logger.info("--- 📊 SCOUT DATABASE REPORT ---")
 
 if __name__ == "__main__":
     start()
