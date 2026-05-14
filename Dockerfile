@@ -1,13 +1,15 @@
+# Use the python-slim image as discussed
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Optimization: Only copy requirements first
+# Copy requirements first to leverage Docker cache
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy everything else
+# Use 'sed' to remove pywinpty before installing (the "Safety Net" approach)
+RUN sed -i '/pywinpty/d' requirements.txt && \
+    pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-# Match your filename!
 CMD ["python", "app.py"]
