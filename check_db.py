@@ -1,6 +1,4 @@
-from models import Session, JobMatch
-
-session = Session()
+  
 results = session.query(JobMatch).all()
 
 print(f"\n--- 📊 SCOUT DATABASE REPORT ({len(results)} entries) ---")
