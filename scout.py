@@ -25,6 +25,29 @@ class JobScout:
         except Exception as e:
             logger.error(f" Error reaching {url}: {e}")
             return None
+    def calculate_match_score(self,job_description):
+            # Convert the entire text to lowercase so matching is case-insensitive
+            text=job_description.lower()
+            #Map out our targeted tech skills to their respective scores
+            skills_weights={
+                "python":10,
+                "fastapi":15,
+                "ai": 20,
+                "solutions": 5,
+            } 
+            # Initialize our score counter at zero
+            total_score=0
+            # Loop through the dictionary keys and values at the same time
+            for skill,weight in skills_weights.items():
+                # Check if the skill keyword exists inside the job text
+                if skill in text: # This is a membership operator check
+                    total_score += weight
+                # Intent priority filters(Intership Bonus)
+                if "intern" in text or "intership" in text:
+                    total_score += 50
+
+                # Hand the final calculation back to the program
+            return total_score
 
     def patrol(self, my_skills: list, db):
         """
@@ -37,21 +60,26 @@ class JobScout:
             soup = self.harvest(target)
             
             if soup:
-                found = self.scan_for_keywords(soup, my_skills)
-                score = (len(found) / len(my_skills)) * 100 if my_skills else 0
-
-                # Create a new database record
+                raw_text= soup.get_text()
+                # Split the text by whitespace words, then join them back with a single space to normalize it. This helps in better keyword matching and scoring.
+                clean_snippet=" ".join(raw_text.split())
+                #This is where the text comes from and gets passed to the engine!
+                logger.info(f"--- EXTRACTED TEXT SNIPPET FOR {target}: {clean_snippet[:150]}...")
+                
+                
+                score=self.calculate_match_score(raw_text) # Passed onto your scoring algorithm 
+                found=self.scan_for_keywords(soup, my_skills)
                 match_record = JobMatch(
                     company=target,
                     score=score,
                     keywords_found=", ".join(found),
                     timestamp=datetime.utcnow() # Always track WHEN data was found
                 )
-                
+        
                 try:
                     db.add(match_record)
                     db.commit() # Save to Vault
-                    logger.info(f"Target: {target} | Score: {score:.1f}% | SAVED")
+                    logger.info(f"Target: {target} | Score: {score} pts | SAVED")
                 except Exception as e:
                     logger.error(f" Failed to save {target}: {e}")
                     db.rollback() # The safety net

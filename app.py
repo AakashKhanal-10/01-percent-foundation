@@ -38,14 +38,16 @@ def run_scout_patrol(background_tasks: BackgroundTasks):
     my_skills = ['Python', 'Intern', 'Data', 'Engineering', 'Machine Learning']
     
     scout = JobScout(targets=hit_list)
+
+    db=database.SessionLocal()
     
     # Run the mission in the background
-    background_tasks.add_task(scout.patrol, my_skills)
+    background_tasks.add_task(scout.patrol, my_skills,db)
     
     return {"message": "Mission initiated. Scout is now patrolling in the background."}
 
 # 4. ENDPOINT: View the Results (The "Vault")
-@app.get("/matches", response_model=list[schema.JobOpportunitySchema])
+@app.get("/matches", response_model=list[schema.ScoutMatchResponse])
 def get_matches(db: Session = Depends(get_db)):
     matches = db.query(models.JobMatch).all()
     return matches

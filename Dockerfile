@@ -11,5 +11,7 @@ RUN sed -i '/pywinpty/d' requirements.txt && \
     pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+# Open the communication gateway port for FastAPI
+EXPOSE 8000
 
-CMD ["python", "app.py"]
+CMD ["uvicorn","app:app","--host","0.0.0.0","--port", "8000"]

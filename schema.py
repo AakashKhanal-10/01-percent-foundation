@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional
-
+from datetime import datetime
 class JobOpportunitySchema(BaseModel):
     # These match our dataclass fields but with Pydantic Power
     company_name: str
@@ -28,5 +28,13 @@ class JobOpportunitySchema(BaseModel):
             return [t.lower() for t in info.data['tech_stack']]
         return v
 
+class ScoutMatchResponse(BaseModel):
+    id: int
+    company: str
+    score: float
+    keywords_found: str
+    timestamp: datetime
+    
+    
     class Config:
-        from_attributes = True # Critical for connecting to your Database models and the bridge to SQLALchemy	
+         from_attributes = True # Critical for connecting to your Database models and the bridge to SQLALchemy	
