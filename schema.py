@@ -8,7 +8,7 @@ class JobOpportunitySchema(BaseModel):
     tech_stack: List[str]
     link: str
     location: str = "Kathmandu"
-    match_score: float = 0.0
+    match_score: str = 0.0
     visa_sponsorship: bool = False
     salary_estimate: Optional[str] = "Negotiable"
     tags: List[str] = []
@@ -31,8 +31,10 @@ class JobOpportunitySchema(BaseModel):
 class ScoutMatchResponse(BaseModel):
     id: int
     company: str
+    job_title: str="Internship"
     score: float
     keywords_found: str
+    location:str="Kathmandu"
     timestamp: datetime
     
     

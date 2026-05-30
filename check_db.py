@@ -1,5 +1,9 @@
-  
-results = session.query(JobMatch).all()
+from database import SessionLocal
+from models import JobMatch
+db=SessionLocal()
+
+
+results = db.query(JobMatch).all()
 
 print(f"\n--- 📊 SCOUT DATABASE REPORT ({len(results)} entries) ---")
 for row in results:
