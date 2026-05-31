@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: scout-container-compose
+    ports:
+      - "8000:8000"
+    volumes:
+      - scout_data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:////app/data/scout_memory.db
+
+volumes:
+  scout_data:
