@@ -30,10 +30,34 @@ class JobScout:
             text=job_description.lower()
             #Map out our targeted tech skills to their respective scores
             skills_weights={
-                "python":10,
-                "fastapi":15,
+                
+                # Core Data Science & Languages
+                "python": 10,
+                "pandas": 15,
+                "numpy": 15,
+                "sql": 10,
+    
+                # Machine Learning Frameworks
+                "scikit-learn": 20,
+                "sklearn": 20,
+                "tensorflow": 15,
+                "keras": 15,
+                "machine learning": 25,
+                "data science": 25,
+    
+                # AI & Agentic Infrastructure
                 "ai": 20,
-                "solutions": 5,
+                "artificial intelligence": 20,
+                "nlp": 20,
+                "fastapi": 15,
+                "api": 10,
+    
+                # DevOps & Operations Engineering
+                "docker": 15,
+                "container": 10,
+                "git": 10,
+                "linux": 10,
+                 
             } 
             # Initialize our score counter at zero
             total_score=0

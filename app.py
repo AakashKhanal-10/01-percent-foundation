@@ -31,11 +31,27 @@ def run_scout_patrol(background_tasks: BackgroundTasks):
     We use BackgroundTasks so the API doesn't 'hang' while scraping.
     """
     hit_list = [
-        "https://www.lftechnology.com",
+       "https://www.lftechnology.com",
+        "https://www.cloudfactory.com",
         "https://www.logpoint.com",
-        "https://www.cloudfactory.com"
+        "https://www.deerwalk.com",
+        "https://www.cotiviti.com.np",
+        "https://www.f1soft.com"
     ]
-    my_skills = ['Python', 'Intern', 'Data', 'Engineering', 'Machine Learning']
+    my_skills = [
+        # Core Languages & Engineering
+        'Python', 'SQL', 'Data Engineering', 'Backend',
+        
+        # Machine Learning & Data Science 
+        'Machine Learning', 'Data Science', 'Scikit-Learn', 'Sklearn', 
+        'Pandas', 'NumPy', 'TensorFlow', 'Keras', 'Feature Engineering',
+        
+         # DevOps & Automation Operations
+        'Docker', 'Docker Compose', 'Container', 'Git', 'Linux', 'Venv',
+        
+        # Role Focus
+        'Intern', 'Internship'
+    ]
     
     scout = JobScout(targets=hit_list)
 
